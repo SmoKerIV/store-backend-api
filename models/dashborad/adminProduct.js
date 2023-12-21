@@ -1,8 +1,24 @@
 const client = require("../../db");
 
 async function viewProducts(req, res) {
-  const result = await client.query(`SELECT * FROM products`);
-  res.send(result.rows);
+    let { search, limit } = req.query;
+    let query = "SELECT * FROM products";
+    if (search) {
+      query += " WHERE name ILIKE $1";
+      search = `%${search}%`;
+    }
+    if (limit) {
+      query += " LIMIT $2";
+    }
+    const result = await client.query(
+      query,
+      limit ? [search, limit] : [search]
+    );
+    if (result.rows.length === 0) {
+      res.status(404).send("No products found.");
+    } else {
+      res.send(result.rows);
+    }
 }
 async function addProduct(req, res) {
   const { name, price, discount, image, active } = req.body;

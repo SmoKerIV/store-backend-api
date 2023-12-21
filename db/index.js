@@ -2,7 +2,7 @@ const { Client } = require("pg");
 require("dotenv").config();
 
 const client = new Client({
-  connectionString: process.env.DATABASE_CONNECTION,
+  connectionString: process.env.DATABASE_CONNECTION + "?sslmode=require",
 });
 
 client

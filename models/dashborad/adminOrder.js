@@ -7,8 +7,7 @@ async function viewOrders(req, res) {
 async function addOrder(req, res) {
   const { items, userID, address, date, status } = req.body;
   const result = await client.query(
-    "INSERT INTO orders (items, userID, address, date, status) VALUES($1, $2, $3, $4, $5) RETURNING *",
-    [items, userID, address, date, status]
+    `INSERT INTO orders (items, userID, address, date, status) VALUES('${items}',${userID}, '${address}', '${date}', '${status}') RETURNING *`
   );
   res.send(result.rows);
 }
@@ -16,9 +15,9 @@ async function changeStatus(req, res) {
   const { status } = req.body;
   const { id } = req.params;
   const result = await client.query(
-    `UPDATE orders SET status = ${status} WHERE id = ${id} RETURNING *`
+    `UPDATE orders SET status = '${status}' WHERE id = ${id} RETURNING *`
   );
-  res.send(result.rows);
+  res.send("success",result.rows);
 }
 module.exports = {
   viewOrders,

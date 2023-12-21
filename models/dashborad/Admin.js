@@ -16,7 +16,7 @@ async function adminLogin(req, res) {
       let user = result.rows[0];
       const match = await bcrypt.compare(password, user.password);
       if (match) {
-        var token = jwt.sign(user, "admin");
+        var token = jwt.sign(user, "admin");      
         res.send({ success: true, token, user });
       } else res.send({ success: false, msg: "Wrong password!" });
     }
