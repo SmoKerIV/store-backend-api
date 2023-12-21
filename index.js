@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
-const students = require("./routers/students");
-const users = require("./routers/users");
-const checkAuth = require("./middleware");
+const dashboard = require("./routers/dashboard");
+const client = require("./routers/client");
 const fileUpload = require("express-fileupload");
 const {uploadFile} = require("@uploadcare/upload-client");
 
@@ -41,13 +40,12 @@ app.post("/v2/upload", async function (req, res) {
 
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Welcome to our store!");
 });
 
 
-
-app.use("/api/v1/students", checkAuth, students);
-app.use("/api/v1/users", users);
+app.use("/api/dashboard", dashboard);
+app.use("/api/client", client);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
